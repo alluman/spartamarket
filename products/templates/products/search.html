@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h1>{{ keyword }} search</h1>
+<ul>
+    {% for product in search_products %}
+    <li>
+        <a href="{% url 'products:detail' product.id %}">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+        {% else %}
+            <img src="{% static 'images/user.png' %}" alt="">
+        {% endif %}
+        <div>{{ product.title }}</div>
+        <div>{{ product.content }}</div>
+        <div>{{ product.price }}</div>
+        <div>{{ product.author }}</div>
+        <div>{{ product.like_user.count}} </div>
+        <p> {{ product.view }}</p>
+        <form action="{% url 'products:like' product.id %}" method="POST">
+            {% csrf_token %}
+            {% if request.user in product.like_user.all %}
+            <button> 좋아요 취소 </button>
+            {% else %}
+            <button>좋아요</button>
+            {% endif %}
+        </form>
+        </a>
+    </li>
+    {% endfor %}
+    </ul>
+{% endblock content %}

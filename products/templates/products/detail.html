@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+{% else %}
+    <img src="{% static 'images/user.png' %}" alt="">
+{% endif %}
 <p>제목: {{ product.title }}</p>
+<p>조회수: {{ product.view }}</p>
 <a href="{% url 'accounts:profile' product.author.username %}">
 <p>작성자: {{ product.author }}</p>
 </a>
@@ -8,6 +15,7 @@
 <p>가격: {{ product.price }} 원</p>
 <p>내용: {{ product.content }}</p>
 <p>좋아요: {{ product.like_user.count }}</p>
+<p>해시태그: {% for hashtag in product.hashtags.all %}{{ hashtag.name }} {% endfor %}</p>
 <form action="{% url 'products:like' product.id %}" method="POST">
     {% csrf_token %}
     {% if request.user in product.like_user.all %}

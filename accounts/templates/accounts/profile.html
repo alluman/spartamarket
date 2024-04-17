@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+{% if product.image %}
+    <img src="{{ user.image.url }}" alt="{{ user.username }}">
+{% else %}
+    <img src="{% static 'images/user.png' %}" alt="">
+{% endif %}
 <h1> username: {{ user.username }}</h1>
 <p> {{ user.created_at }}</p>
 <p> 현재 팔로워 {{ user.followers.count }}명</p>

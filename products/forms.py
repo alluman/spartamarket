@@ -2,9 +2,11 @@ from django import forms
 from products.models import Product
 
 class ProductForm(forms.ModelForm):
+    hashtags = forms.CharField(widget=forms.Textarea, required=False)
+
     class Meta:
         model = Product
-        fields = ['title', 'content', 'price']
+        fields = ['title', 'content', 'price', 'image']
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
