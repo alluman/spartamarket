@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'products:list' %}">청순 수연</a>
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="logout">
+        </form>
+        <a href="{% url 'products:create' %}">새 글 작성</a>
+        {% else %}
+            <a href="{% url 'accounts:login' %}">login</a>
+            <a href="{% url 'accounts:signup' %}">signup</a>
+        {% endif %}
+
+    </nav>
+    {% for message in messages %}
+    <li> {{ message }} </li>
+    {% endfor %}
+
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

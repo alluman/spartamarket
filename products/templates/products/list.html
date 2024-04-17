@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1> list </h1>
+<ul>
+{% for product in products %}
+<li>
+    <a href="{% url 'products:detail' product.id %}">
+    <div>{{ product.title }}</div>
+    <div>{{ product.content }}</div>
+    <div>{{ product.price }}</div>
+    <div>{{ product.author }}</div>
+    <div>{{ product.like_user.count}} </div>
+    <form action="{% url 'products:like' product.id %}" method="POST">
+        {% csrf_token %}
+        {% if request.user in product.like_user.all %}
+        <button> 좋아요 취소 </button>
+        {% else %}
+        <button>좋아요</button>
+        {% endif %}
+    </form>
+    </a>
+</li>
+{% endfor %}
+</ul>
+{% endblock content %}
