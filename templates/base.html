@@ -24,6 +24,7 @@
             {% csrf_token %}
             <input type="submit" value="delete">
         </form>
+        <a href="{% url 'accounts:profile' request.user.username %}">내 프로필</a>
         {% else %}
             <a href="{% url 'accounts:login' %}">login</a>
             <a href="{% url 'accounts:signup' %}">signup</a>
