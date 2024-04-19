@@ -21,7 +21,7 @@ def list_view(request):
 @login_required
 def create_view(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, request=request) 
+        form = ProductForm(request.POST, request.FILES) 
         if form.is_valid():
             content = form.cleaned_data.get('content', '')
             hashtags = form.cleaned_data.get('hashtags', '')
@@ -32,13 +32,15 @@ def create_view(request):
                 if not valid_tag.match(tag_name):
                     messages.error(request, '해시태그는 한글, 영어, 숫자만 포함할 수 있습니다: ' + tag_name)
                     return render(request, 'products/create.html', {"form": form})
-            product = form.save(author=request.user)
+            product = form.save(commit=False)
+            product.author=request.user
+            product.save()
             for tag_name in tags:
                 tag, _ = Hashtag.objects.get_or_create(name=tag_name)
                 product.hashtags.add(tag)           
             return redirect('products:list')
     else:
-        form = ProductForm(request=request) 
+        form = ProductForm() 
     return render(request, 'products/create.html', {"form":form})
 
 def detail_view(request, product_id):
@@ -54,7 +56,7 @@ def update_view(request, product_id):
         messages.warning(request, message='권한이 없습니다.')
         return redirect("products:detail", product_id)
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product, request=request)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             product.hashtags.clear()
             content = form.cleaned_data.get('content', '')
@@ -66,7 +68,9 @@ def update_view(request, product_id):
                 if not valid_tag.match(tag_name):
                     messages.error(request, '해시태그는 한글, 영어, 숫자만 포함할 수 있습니다: ' + tag_name)
                     return render(request, 'products/product_update.html', {"form": form})
-            product = form.save(author=request.user)
+            product = form.save(commit=False)
+            product.author=request.user
+            product.save()
             for tag_name in tags:
                 tag, _ = Hashtag.objects.get_or_create(name=tag_name)
                 product.hashtags.add(tag)           

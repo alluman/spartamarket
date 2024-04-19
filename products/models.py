@@ -14,3 +14,6 @@ class Product(models.Model):
     author = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
     like_user = models.ManyToManyField('accounts.User', related_name='like_products')
     hashtags = models.ManyToManyField(Hashtag, related_name='products')
+
+    def __str__(self):
+        return self.title
