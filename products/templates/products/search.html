@@ -11,12 +11,12 @@
         {% else %}
             <img src="{% static 'images/user.png' %}" alt="">
         {% endif %}
-        <div>{{ product.title }}</div>
-        <div>{{ product.content }}</div>
-        <div>{{ product.price }}</div>
-        <div>{{ product.author }}</div>
-        <div>{{ product.like_user.count}} </div>
-        <p> {{ product.view }}</p>
+        <div> {{ product.title }}</div>
+        <div> {{ product.content }}</div>
+        <div> {{ product.price }}</div>
+        <div> {{ product.author }}</div>
+        <div> {{ product.like_user.count}} </div>
+        <p> {{ product.view }} </p>
         <form action="{% url 'products:like' product.id %}" method="POST">
             {% csrf_token %}
             {% if request.user in product.like_user.all %}

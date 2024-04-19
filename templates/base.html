@@ -9,9 +9,7 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'products:list' %}">청순 수연</a>
-        
-        <p>검색</p>
+        <a href="{% url 'products:list' %}"><button>청순 수연</button></a>
         <form action="{% url 'products:search' %}" method="GET">
         <input type="text", name='keyword'>
         <button>search</button>
@@ -22,11 +20,14 @@
             <input type="submit" value="logout">
         </form>
         <a href="{% url 'products:create' %}">새 글 작성</a>
+        <form action="{% url 'accounts:delete' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="delete">
+        </form>
         {% else %}
             <a href="{% url 'accounts:login' %}">login</a>
             <a href="{% url 'accounts:signup' %}">signup</a>
         {% endif %}
-
     </nav>
     {% for message in messages %}
     <li> {{ message }} </li>

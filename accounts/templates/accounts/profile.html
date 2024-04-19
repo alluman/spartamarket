@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-{% if product.image %}
+{% if user.image %}
     <img src="{{ user.image.url }}" alt="{{ user.username }}">
 {% else %}
     <img src="{% static 'images/user.png' %}" alt="">
 {% endif %}
 <h1> username: {{ user.username }}</h1>
 <p> {{ user.created_at }}</p>
+<form action="{% url 'accounts:userupdate' user.username %}", method="">
+    {% csrf_token %}
+    <button>유저 수정</button>
+</form>
 <p> 현재 팔로워 {{ user.followers.count }}명</p>
 <p> 현재 팔로잉 {{ user.following.count }}명</p>
 <form action="{% url 'accounts:follow' user.pk %}", method="POST">
@@ -35,7 +39,6 @@
             <button>좋아요</button>
             {% endif %}
         </form>
-    
         </a>
     </li>
     {% endfor %}

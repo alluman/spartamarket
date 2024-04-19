@@ -15,7 +15,8 @@
 <p>가격: {{ product.price }} 원</p>
 <p>내용: {{ product.content }}</p>
 <p>좋아요: {{ product.like_user.count }}</p>
-<p>해시태그: {% for hashtag in product.hashtags.all %}{{ hashtag.name }} {% endfor %}</p>
+<p>해시태그: {% for hashtag in product.hashtags.all %} #{{ hashtag.name }} {% endfor %}</p>
+
 <form action="{% url 'products:like' product.id %}" method="POST">
     {% csrf_token %}
     {% if request.user in product.like_user.all %}
